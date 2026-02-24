@@ -1,7 +1,7 @@
 import json
 from xml.dom.minidom import parseString
 
-from six.moves.urllib.parse import parse_qs
+from urllib.parse import parse_qs
 
 
 class XeroException(Exception):

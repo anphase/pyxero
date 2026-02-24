@@ -1,11 +1,8 @@
-from __future__ import unicode_literals
-
 import json
 import requests
-import six
 
 from datetime import datetime
-from six.moves.urllib.parse import parse_qs
+from urllib.parse import parse_qs
 from xml.etree.ElementTree import tostring, SubElement, Element
 
 from .exceptions import (
@@ -137,7 +134,7 @@ class BaseManager(object):
                 elif key in self.DATE_FIELDS:
                     val = sub_data.strftime('%Y-%m-%dT%H:%M:%S')
                 else:
-                    val = six.text_type(sub_data)
+                    val = str(sub_data)
                 elm.text = val
 
         return root_elm
@@ -152,7 +149,7 @@ class BaseManager(object):
             root_elm = self.dict_to_xml(Element(self.singular), data)
 
         # In python3 this seems to return a bytestring
-        return six.u(tostring(root_elm))
+        return tostring(root_elm, encoding='unicode')
 
     def _parse_api_response(self, response, resource_name):
         data = json.loads(response.text, object_hook=json_load_object_hook)
@@ -309,7 +306,7 @@ class BaseManager(object):
             def get_filter_params(key, value):
                 last_key = key.split('_')[-1]
                 if last_key.upper().endswith('ID'):
-                    return 'Guid("%s")' % six.text_type(value)
+                    return 'Guid("%s")' % str(value)
                 if key in self.BOOLEAN_FIELDS:
                     return 'true' if value else 'false'
                 elif key in self.DATE_FIELDS:
@@ -317,7 +314,7 @@ class BaseManager(object):
                 elif key in self.DATETIME_FIELDS:
                     return value.isoformat()
                 else:
-                    return '"%s"' % six.text_type(value)
+                    return '"%s"' % str(value)
 
             def generate_param(key, value):
                 parts = key.split("__")
@@ -357,7 +354,7 @@ class BaseManager(object):
             # Treat any remaining arguments as filter predicates
             # Xero will break if you search without a check for null in the first position:
             # http://developer.xero.com/documentation/getting-started/http-requests-and-responses/#title3
-            sortedkwargs = sorted(six.iteritems(kwargs),
+            sortedkwargs = sorted(kwargs.items(),
                 key=lambda item: -1 if 'isnull' in item[0] else 0)
             for key, value in sortedkwargs:
                 filter_params.append(generate_param(key, value))

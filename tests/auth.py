@@ -1,7 +1,7 @@
 import unittest
 
 from datetime import datetime, timedelta
-from mock import patch, Mock
+from unittest.mock import patch, Mock
 
 from xero.auth import PublicCredentials, PartnerCredentials
 from xero.exceptions import XeroException, XeroNotVerified, XeroUnauthorized

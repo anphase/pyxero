@@ -1,9 +1,7 @@
-from __future__ import unicode_literals
-
 import unittest
 
 from datetime import date
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from xero import Xero
 from xero.exceptions import (

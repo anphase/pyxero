@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import datetime
 import requests
 
@@ -7,7 +5,7 @@ from oauthlib.oauth1 import (
     SIGNATURE_RSA, SIGNATURE_TYPE_AUTH_HEADER, SIGNATURE_HMAC
 )
 from requests_oauthlib import OAuth1
-from six.moves.urllib.parse import urlencode, parse_qs
+from urllib.parse import urlencode, parse_qs
 
 from .constants import (
     XERO_BASE_URL, REQUEST_TOKEN_URL, AUTHORIZE_URL, ACCESS_TOKEN_URL

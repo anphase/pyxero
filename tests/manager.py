@@ -1,12 +1,9 @@
-from __future__ import unicode_literals
-
 import datetime
 import re
-import six
 import unittest
 
 from collections import defaultdict
-from mock import Mock
+from unittest.mock import Mock
 from xml.dom.minidom import parseString
 
 from xero.manager import Manager
@@ -15,7 +12,7 @@ from xero.manager import Manager
 class ManagerTest(unittest.TestCase):
     def assertXMLEqual(self, xml1, xml2, message=''):
         def to_str(s):
-            return s.decode('utf-8') if six.PY3 and isinstance(s, bytes) else str(s)
+            return s.decode('utf-8') if isinstance(s, bytes) else str(s)
 
         def clean_xml(xml):
             xml = '<root>%s</root>' % to_str(xml)
