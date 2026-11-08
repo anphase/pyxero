@@ -339,6 +339,27 @@ class ManagerTest(unittest.TestCase):
             },
         )
 
+    def test_datetime_fields_serialized_as_iso(self):
+        """Datetime fields such as FullyPaidOnDate are sent in ISO 8601 format."""
+        credentials = Mock(base_url="")
+        manager = Manager("Invoices", credentials)
+
+        body = manager._prepare_data_for_save(
+            {
+                "Reference": "ABAS 123",
+                "FullyPaidOnDate": datetime.datetime(2017, 12, 14, 0, 0),
+            }
+        )
+
+        assertXMLEqual(
+            self,
+            body.decode("utf-8"),
+            "<Invoice>"
+            "<Reference>ABAS 123</Reference>"
+            "<FullyPaidOnDate>2017-12-14T00:00:00</FullyPaidOnDate>"
+            "</Invoice>",
+        )
+
     def test_linked_transaction_save_uses_singular_root(self):
         """A single linked transaction should be sent as a LinkedTransaction element."""
         credentials = Mock(base_url="")
